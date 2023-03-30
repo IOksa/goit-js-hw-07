@@ -25,8 +25,8 @@ const containerGallery=document.querySelector('.gallery');
 const galleryMarkup=createGalleryMarkup(galleryItems);
 
 containerGallery.insertAdjacentHTML("beforeend", galleryMarkup);
-containerGallery.addEventListener('click', onGalleryItemClick);
 
+let gallery = new SimpleLightbox('.gallery a', {captionDelay: 250, showCounter: false});
 
 function createGalleryMarkup(gallery){
  return gallery.map(({preview, original, description})=>{
@@ -41,23 +41,3 @@ function createGalleryMarkup(gallery){
   .join("");
 }
 
-function onGalleryItemClick (event){
-    event.preventDefault();
-
-    const isImageGalleryEl=event.target.classList.contains('gallery__image');
-    if(!isImageGalleryEl){
-        return;
-    }
-    
-  openGalleryItemInModal();
-}
-
-function openGalleryItemInModal(){
-  let gallery = new SimpleLightbox('.gallery a', {captionDelay: 250, showCounter: false});
-  gallery.on('show.simplelightbox', function () {
-    // do something…
-
-  });
-
- 
-}
