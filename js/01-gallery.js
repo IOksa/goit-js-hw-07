@@ -65,11 +65,16 @@ function onGalleryItemClick (event){
 function openGalleryItemInModal(src){
   instance = basicLightbox.create(`
     <img src="${src}" width="800" height="600">
-`);
-
+`,{
+  onShow: (instance) => {
+    window.addEventListener('keydown', onEscKeyPress)
+  },
+  onClose: (instance) => {
+    window.removeEventListener('keydown', onEscKeyPress)}
+  });
 
   instance.show();
-  window.addEventListener('keydown', onEscKeyPress);
+ // window.addEventListener('keydown', onEscKeyPress);
   
 }
 
@@ -78,7 +83,7 @@ function onEscKeyPress(event) {
   const isEscKey = event.code === ESC_KEY_CODE;
   
   if (isEscKey) {
-    window.removeEventListener('keydown', onEscKeyPress);
+    //window.removeEventListener('keydown', onEscKeyPress);
     instance.close();
   }
 }
