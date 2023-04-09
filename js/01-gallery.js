@@ -22,7 +22,7 @@ import { galleryItems } from './gallery-items.js';
 // Change code below this line
 
 //console.log(galleryItems);
-
+const ESC_KEY_CODE = 'Escape';
 const containerGallery=document.querySelector('.gallery');
 
 const galleryMarkup=createGalleryMarkup(galleryItems);
@@ -31,7 +31,6 @@ containerGallery.insertAdjacentHTML("beforeend", galleryMarkup);
 
 containerGallery.addEventListener('click', onGalleryItemClick);
 
-let instance;
 
 function createGalleryMarkup(gallery){
  return gallery.map(({preview, original, description})=>{
@@ -63,28 +62,28 @@ function onGalleryItemClick (event){
 }
 
 function openGalleryItemInModal(src){
-  instance = basicLightbox.create(`
+  const instance = basicLightbox.create(`
     <img src="${src}" width="800" height="600">
 `,{
-  onShow: (instance) => {
-    window.addEventListener('keydown', onEscKeyPress)
+  handler: null,
+  onShow(instance){
+    this.handler = onEscKeyPress.bind(instance);
+    document.addEventListener('keydown', this.handler);
   },
-  onClose: (instance) => {
-    window.removeEventListener('keydown', onEscKeyPress)}
+  onClose(){
+        document.removeEventListener('keydown', this.handler)}
   });
 
   instance.show();
- // window.addEventListener('keydown', onEscKeyPress);
+
   
 }
 
 function onEscKeyPress(event) {
-  const ESC_KEY_CODE = 'Escape';
   const isEscKey = event.code === ESC_KEY_CODE;
   
   if (isEscKey) {
-    //window.removeEventListener('keydown', onEscKeyPress);
-    instance.close();
+    this.close();
   }
 }
 
